@@ -1,0 +1,128 @@
+<html>
+
+  <!-- overall connection page, connects the home log in page to the features of the application -->
+
+  <head>
+    <title>Fitflex</title>
+    <style>
+
+
+    .logo {
+     padding: 30px 0;
+     text-align: center;
+     }
+
+.logo img {
+  width: 20%;
+  background-color: #444;
+  padding: 10px;
+}
+
+
+    .ul-style {
+       list-style-type: none;
+       margin: 0;
+       padding: none;
+      font-family: "Helvetica Neue";
+      font size: 25px;
+       overflow: hidden;
+       background-color: #444;
+       }
+
+    .a-dropbtn {
+       display: inline-block;
+       color: white;
+       text-align: center;
+       padding: 14px 16px;
+       text-decoration: none;
+    }
+
+    li a:hover, .dropdown:hover .dropbtn {
+       background-color: red;
+    }
+
+    li.dropdown {
+       display: inline-block;
+    }
+
+    .dropdown-content {
+       display: none;
+       position: absolute;
+       background-color: #f9f9f9;
+       min-width: 160px;
+       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+       z-index: 1;
+    }
+
+    .dropdown-content a {
+       color: black;
+       padding: 12px 16px;
+       text-decoration: none;
+       display: block;
+       text-align: left;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+       display: block;
+    }
+
+  .btn-logout {
+    border-bottom: 12px solid #ccc;
+  border-right: 12px solid transparent;
+  border-left: 12px solid transparent;
+  border-radius:4px;
+    box-shadow:none;
+    float: left;
+  height: 50px;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+
+}
+h1 {
+       padding: 25px 25px;
+      font-family: "Helvetica Neue";
+      font size: 45px;
+       overflow: hidden;
+       background-color: #ECF1EF;
+      }
+
+
+      }
+
+</style>
+    <link href="../static/fitflex.css" rel="stylesheet">
+
+   <!-- connections between the other features to the home page, finalized, tested and complete -->
+
+  <body>
+
+  <ul class="ul-style">
+   <li style="float:left"><a href="index.html" class="a-dropbtn">Home    </a></li>
+   <li style="float:left"><a href="plan.html" class="a-dropbtn">Plan My Workout    </a></li>
+   <li style="float:left"><a href ="weekcal.html" class="a-dropbtn">Weekly Calendar    </a></li>
+   <li style="float:left"><a href="machines.html" class="a-dropbtn">Machines    </a></li>
+   <li style="float:left"><a href="trainers.html" class="a-dropbtn">Trainers </a></li>
+   <li style="float:left"><a href="here.html" class="a-dropbtn">Here    </a></li>
+    <li class="dropdown">
+     </form>
+   </li>
+   <li style="float:left"><a class="a-dropbtn" href="about.html">About Us</a></li>
+   <li class="dropdown" style="float:right">
+     <a href="javascript:void(0)" class="a-dropbtn"> My Fitflex Account</a>
+     <div class="dropdown-content">
+       <a href="profile.html">My Profile</a>
+       <a href="signout.html">Sign Out</a>
+     </div>
+   </li>
+  </ul>
+
+  <!-- source code connection to our logo -->
+   
+
+   {% block content %} {% endblock %}
+
+  </body>
+</html>

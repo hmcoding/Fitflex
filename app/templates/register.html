@@ -1,0 +1,55 @@
+<head>
+  
+ <!-- completed user profile for the login page --> 
+  
+  <title>Fitflex</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
+  <link href="../static/signup.css" rel="stylesheet">
+</head>
+
+<div class="container">
+  <div class="header">
+    <nav>
+      <ul class="nav nav-pills pull-right">
+        <form class="login-form" action="/" method="POST">
+          <input type="text" name="user_key" class="login-email" id="user_key" placeholder="Email" autofocus="autofocus"/>
+          <input type="password" name="user_password" class="login-password" id="user_password" placeholder="Password"/>
+          <button type="submit" value="submitted" name="signSubmit" type="button">Sign in</button>
+        </form>
+        {% if pw %}
+         <div class="alert alert-danger" style="margin-;eft: 700px; top:50%;">{{ pw }}</div>
+        {% endif %}
+      </ul>
+    </div>
+</div>
+
+<div class="jumbotron jumbotron-codelines">
+  <div class="col-md-7 text-center text-md-left ">
+    <h1>For your fitness future</h1>
+      <p class="alt-lead mb-4">
+        <b>Fitflex</b> is made for you to make fitness an easier goal to obtain.
+      </p>
+  </div>
+  <div class="contentcontainer med left" style="margin-left: 700px;">
+    <form class="form-signin" action="" autocomplete="off" method="POST">
+      {% if err %}
+       <div class="alert alert-danger" style="margin-;eft: 700px; top:50%;">{{ err }}</div>
+      {% endif %}
+      <dl class="form-group mt-0">
+        <label for="username">Name</label>
+          <input type="text" name="username" id="username" class="form-control form-control-lg input-block" placeholder="Enter your name">
+      </dl>
+      <dl class="form-group">
+        <label for="useremail">Email</label>
+          <input type="text" name="useremail" id="useremail" class="form-control form-control-lg input-block" placeholder="email@example.com">
+      </dl>
+      <dl class="form-group">
+        <label for="userpass">Password</label>
+          <input type="password" name="userpass" id="userpass" class="form-control form-control-lg input-block" placeholder="Create a password">
+          <p style="font-size:1.0em">Use at least seven characters.</p>
+      </dl>
+      <button class="btn btn-primary btn-large f4 btn-block" type="submit" value="signUpSubmit" name="signSubmit">Sign up for Fitflex</button>
+    </form>
+  </div>
+</div>

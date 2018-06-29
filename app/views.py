@@ -1,5 +1,5 @@
 from app import b_app
-from app.database import userAcct
+from app.database import userAcct, bookMachine
 #, usrAgenda, getAgenda, usrInterviewQA, getInterview
 import requests
 import re
@@ -100,10 +100,27 @@ def index():
     #create the view for the index
     return render_template('index.html')
 
-@b_app.route('/machines.html')
-def signup():
+@b_app.route('/machines.html', methods=['GET', 'POST'])
+def newbooking():
     if currUser == "":
         return redirect(url_for('home'))
+
+    print "for booking"
+    print (request.method)
+    info = None
+
+    if request.method == 'POST':
+	        clientName = request.form.get('clientName')
+	        machineType = request.form.get('machineType')
+	        date = request.form.get('date')
+	        timeStart = request.form.get('timeStart')
+		timeEnd = request.form.get('timeEnd')
+	        slot = request.form.get('slot')
+	        info = request.form.get('info')
+	
+	
+	        alert = bookMachine(email, clientName, machineType, date, timeStart, timeEnd, slot, info)
+	        return redirect(url_for('profile', alert=alert))
 
     return render_template('machines.html')
 

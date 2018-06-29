@@ -20,51 +20,50 @@ def userAcct(name, user, password):
 		else:
 			print("IN DB")
 			#data = {user : [{'name' : name, 'password' : password}]}
-			agendaList = []
+			book = []
 			interviewList = []
-			data[user] = {'name' : name, 'password' : password, 'agenda' : agendaList, 'interview' : interviewList}
+			data[user] = {'name' : name, 'password' : password, 'machines' : book, 'interview' : interviewList}
 	except KeyError:
 		return "KeyError"
 
 	data.close()
 
 
-def usrAgenda(user, eventName, eventType, location, date, time, compName, attire, additional):
+def bookMachine(user, clientName, machineType, date, timeStart, timeEnd, slot, info):
 	try:
 		#open the database
 		data = shelve.open('acct.db', writeback = True)
 		#set the list to the user's existing list if it exists
-		agendaList = data[user]['agenda']
+		book = data[user]['machines']
 
-		if not agendaList:
+		if not book:
 			num = 1
 		else:
-			num = agendaList[-1]['id'] + 1
+			num = book[-1]['id'] + 1
 
 		print ("NUM: ", num)
 
 		#store the agenda information in a dict
-		agenda = {'id' : num,
-				  'eventName' : eventName,
-			  	  'eventType' : eventType,
-				  'location' : location,
+		machines = {'id' : num,
+				  'clientName' : clientName,
+			  	  'machineType' : machineType,
 				  'date' : date,
-				  'time' : time,
-			  	  'compName' : compName,
-			      'attire' : attire,
-			  	  'additional' : additional}
+				  'timeStart' : timeStart,
+			  	  'timeEnd' : timeEnd,
+			      'slot' : slot,
+			  	  'info' : info}
 
-		print agenda
+		print machines
 		#append to the agenada list
-		agendaList.append(agenda)
+		book.append(machines)
 		#update it in the database
-		data[user]['agenda'] = agendaList
+		data[user]['machines'] = book
 
 		data.close()
-		print "agenda successful"
+		print "booking successful"
 		return "Created successfully"
 	except:
-		print "agenda failure"
+		print "booking failure"
 		return "Failed to create"
 
 def usrInterviewQA(user, company, yourself, goals, why, want, expecting, strweak, leave, describe, situation, position, decision, questions):
@@ -113,13 +112,13 @@ def usrInterviewQA(user, company, yourself, goals, why, want, expecting, strweak
 
 
 
-def getAgenda(user):
+def getMBooking(user):
 	data = shelve.open('acct.db', writeback = True)
-	agendaList = data[user]['agenda']
-	print agendaList
+	book = data[user]['machines']
+	print book
 
 	data.close()
-	return agendaList
+	return book
 
 def getInterview(user):
         data = shelve.open('acct.db', writeback = True)

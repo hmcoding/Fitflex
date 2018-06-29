@@ -1,5 +1,5 @@
 from app import b_app
-from app.database import userAcct, bookMachine
+from app.database import userAcct, bookMachine, getMBooking
 #, usrAgenda, getAgenda, usrInterviewQA, getInterview
 import requests
 import re
@@ -141,9 +141,11 @@ def newinterview():
 
 @b_app.route('/weekcal.html')
 def newdate():
+    #print currUser
     if currUser == "":
         return redirect(url_for('home'))
 
+    #machines = getMBooking(email)
     return render_template('weekcal.html')
 
 @b_app.route('/trainers.html')

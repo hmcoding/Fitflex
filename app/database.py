@@ -7,7 +7,7 @@ import requests
 #database that saves the users profile and their agenda
 
 def userAcct(name, user, password):
-	print("conncected")
+	print("connected")
 	try:
 		print("trying")
 		data = shelve.open('acct.db', writeback = True)

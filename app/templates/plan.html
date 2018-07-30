@@ -1,11 +1,216 @@
-
 {% extends "header.html" %}
 {% block content %}
-
 <!DOCTYPE html>
+
 <html>
+<head>
+	 <!-- included link to the agenda interface --> 
+	 
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	 
+	
+	<style>
+	
+	 h2 {
+	
+	 font-family: "Helvetica Neue";
+	 padding: 15px;
+	 }
+	* {
+	 box-sizing: border-box;
+	}
+	 
+	<!--text area for the user to implement their upcoming events--> 
+	 
+	input[type=text], select, textarea{
+	 width: 100%;
+	 padding: 12px;
+	 border: 1px solid #ccc;
+	 border-radius: 4px;
+	 box-sizing: border-box;
+	 resize: vertical;
+	 font-family: "Helvetica Neue"; 
+	}
+	
+	label {
+	 padding: 12px 12px 12px 0;
+	 display: inline-block;
+	 font-family: "Helvetica Neue";
+	}
+	
+	input[type=submit] {
+	 background-color: #4CAF50;
+	 color: white;
+	 padding: 12px 20px;
+	 border: none;
+	 border-radius: 4px;
+	 cursor: pointer;
+	 float: right;
+	}
+	
+	input[type=submit]:hover {
+	 background-color: #45a049;
+	}
+	
+	.container {
+	 border-radius: 5px;
+	 background-color: #f2f2f2;
+	 padding: 20px;
+	}
+	
+	.col-25 {
+	 float: left;
+	 width: 25%;
+	 margin-top: 6px;
+	}
+	
+	.col-75 {
+	 float: left;
+	 width: 75%;
+	 margin-top: 6px;
+	}
+	
+	/* Clear floats after the columns */
+	.row:after {
+	 content: "";
+	 display: table;
+	 clear: both;
+	}
+	
+	/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+	@media (max-width: 600px) {
+	 .col-25, .col-75, input[type=submit] {
+	 width: 100%;
+	 margin-top: 0;
+	 }
+	}
+	</style>
+	</head>
+	<body>
+	 <!-- form created for the user to input their info --> 
+	 
+	<form class="plan-workout" action="" method="POST">
+        <h2><center>Plan My Workout<center></h2>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-25">
+                    <label for="fname">Date</label>
+                </div>
+                <div class="col-25">
+                    <select id="type" name="month">
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                    </select>
+                </div>
 
-</html>
+                <div class="col-25">
+                    <select id="type" name="day">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
 
-  {% endblock %}
-  
+                <div class="col-25">
+                    <select id="type" name="year">
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="fname">Focus Area</label>
+                </div>
+                <div class="col-75">
+                    <input type="checkbox" name="vehicle1" value="Arms">Arms<br>
+                    <input type="checkbox" name="vehicle2" value="Legs">Legs<br>
+                    <input type="checkbox" name="vehicle3" value="Back">Back<br>
+                    <input type="checkbox" name="vehicle4" value="Chest">Chest<br>
+                    <input type="checkbox" name="vehicle5" value="Abs">Abs<br>
+                    <input type="checkbox" name="vehicle6" value="Full Body">Full Body<br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="fname">Machine</label>
+                </div>
+                <div class="col-75">
+                    <select id="type" name="machineType">
+                    <option value="Treadmill">Treadmill</option>
+                    <option value="Elliptical">Elliptical</option>
+                    <option value="Stair Stepper">Stair Stepper</option>
+                    <option value="Bench Press">Bench Press</option>
+                    <option value="Smith Machine">Smith Machine</option>
+                    <option value="Squat Rack">Squat Rack</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="fname">Type</label>
+                </div>
+                <div class="col-75">
+                    <input type="checkbox" name="vehicle7" value="Cardio">Cardio<br>
+                    <input type="checkbox" name="vehicle8" value="Weights">Weights<br>
+                    <input type="checkbox" name="vehicle9" value="Stretching">Stretching<br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="attire">Duration</label>
+                </div>
+                <div class="col-75">
+                    <select id="slot" name="slot">
+                    <option value="fifteen">15 min</option>
+                    <option value="thirty">30 min</option>
+                    <option value="sixty">60 min</option>
+                    <option value="ninety">90 min</option>
+                    <option value="hundredtwenty">120 min</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="info">Details</label>
+                </div>
+                <div class="col-75">
+                    <textarea id="info" name="info" placeholder="Write something.." style="height:200px"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <input name="PlanWorkout" type="submit">
+            </div>
+        </div>
+	</form>
+	
+	</body>
+	</html>
+
+{% endblock %}

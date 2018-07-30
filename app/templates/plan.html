@@ -169,12 +169,14 @@
                     <label for="fname">Focus Area(s)</label>
                 </div>
                 <div class="col-75">
-                    <input type="checkbox" name="vehicle1" value="Arms">Arms<br>
-                    <input type="checkbox" name="vehicle2" value="Legs">Legs<br>
-                    <input type="checkbox" name="vehicle3" value="Back">Back<br>
-                    <input type="checkbox" name="vehicle4" value="Chest">Chest<br>
-                    <input type="checkbox" name="vehicle5" value="Abs">Abs<br>
-                    <input type="checkbox" name="vehicle6" value="Full Body">Full Body<br>
+		<select name="areas" size="6" multiple>
+		  <option value="Arms">Arms</option>
+		  <option value="Legs">Legs</option>
+		  <option value="Back">Back</option>
+		  <option value="Chest">Chest</option>
+		  <option value="Abs">Abs</option>
+		  <option value="Full Body">Full Body</option>
+		</select>
                 </div>
             </div>
 
@@ -183,12 +185,14 @@
                     <label for="fname">Machine(s)</label>
                 </div>
                 <div class="col-75">
-                    <input type="checkbox" name="machineType1" value="Treadmill">Treadmill<br>
-                    <input type="checkbox" name="machineType2" value="Elliptical">Elliptical<br>
-                    <input type="checkbox" name="machineType3" value="Stair Stepper">Stair Stepper<br>
-                    <input type="checkbox" name="machineType4" value="Bench Press">Bench Press<br>
-                    <input type="checkbox" name="machineType5" value="Smith Machine">Smith Machine<br>
-                    <input type="checkbox" name="machineType6" value="Squat Rack">Squat Rack<br>
+		<select name="machines" size="6" multiple>
+                    <option value="Treadmill">Treadmill</option>
+                    <option value="Elliptical">Elliptical</option>
+                    <option value="Stair Stepper">Stair Stepper</option>
+                    <option value="Bench Press">Bench Press</option>
+                    <option value="Smith Machine">Smith Machine</option>
+                    <option value="Squat Rack">Squat Rack</option>
+		</select>
                 </div>
             </div>
 
@@ -197,9 +201,11 @@
                     <label for="fname">Type(s)</label>
                 </div>
                 <div class="col-75">
-                    <input type="checkbox" name="vehicle7" value="Cardio">Cardio<br>
-                    <input type="checkbox" name="vehicle8" value="Weights">Weights<br>
-                    <input type="checkbox" name="vehicle9" value="Stretching">Stretching<br>
+		<select name="types" size="3" multiple>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Weights">Weights</option>
+                    <option value="Stretching">Stretching</option>
+		</select>
                 </div>
             </div>
 

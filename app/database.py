@@ -4,7 +4,7 @@ import shelve
 import re
 import requests
 
-#database that saves the users profile and their agenda
+#database that saves the users profile and their info
 
 def userAcct(name, user, password):
 	print("connected")
@@ -22,7 +22,7 @@ def userAcct(name, user, password):
 			#data = {user : [{'name' : name, 'password' : password}]}
 			book = []
 			interviewList = []
-			data[user] = {'name' : name, 'password' : password, 'machines' : book, 'interview' : interviewList}
+			data[user] = {'name' : name, 'password' : password, 'machines' : book, 'onePlan' : plan}
 	except KeyError:
 		return "KeyError"
 
@@ -43,7 +43,7 @@ def bookMachine(user, clientName, machineType, date, timeStart, timeEnd, slot, i
 
 		print ("NUM: ", num)
 
-		#store the agenda information in a dict
+		#store the information in a dict
 		machines = {'id' : num,
 				  'clientName' : clientName,
 			  	  'machineType' : machineType,
@@ -54,7 +54,7 @@ def bookMachine(user, clientName, machineType, date, timeStart, timeEnd, slot, i
 			  	  'info' : info}
 
 		print machines
-		#append to the agenada list
+		
 		book.append(machines)
 		#update it in the database
 		data[user]['machines'] = book
@@ -66,47 +66,42 @@ def bookMachine(user, clientName, machineType, date, timeStart, timeEnd, slot, i
 		print "booking failure"
 		return "Failed to create"
 
-def usrInterviewQA(user, company, yourself, goals, why, want, expecting, strweak, leave, describe, situation, position, decision, questions):
+def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
 	try:
 		#open the database
 		data = shelve.open('acct.db', writeback = True)
 		#set the list to the user's existing list if it exists
-		interviewList = data[user]['interview']
+		plan = data[user]['plan']
 
-		if not interviewList:
-			num = 100
+		if not plan:
+			num = 1
 		else:
-			num = interviewList[-1]['id'] + 1
+			num = plan[-1]['id'] + 1
 
 		print ("NUM: ", num)
 
-		#store the agenda information in a dict
-		interview = {'id' : num,
-				  'company' : company,
-				  'yourself' : yourself,
-			  	  'goals' : goals,
-				  'why' : why,
-				  'want' : want,
-				  'expecting' : expecting,
-			  	  'strweak' : strweak,
-			      'leave' : leave,
-			  	  'describe' : describe,
-				'situation' : situation,
-				'position' : position,
-				'decision' : decision,
-				'questions' : questions}
+		
+		onePlan = {'id' : num,
+				  'month' : month,
+				  'day' : day,
+			  	  'year' : year,
+				  'areas' : areas,
+				  'machines' : machines,
+				  'types' : types,
+			  	  'slot' : slot,
+			      'info' : info}
 
-		print interview
-		#append to the agenada list
-		interviewList.append(interview)
+		print onePlan
+		
+		plan.append(onePlan)
 		#update it in the database
-		data[user]['interview'] = interviewList
+		data[user]['onePlan'] = plan
 
 		data.close()
-		print "interview successful"
+		print "plan successful"
 		return "Created successfully"
 	except:
-		print "interview failure"
+		print "plan failure"
 		return "Failed to create"
 
 
@@ -120,10 +115,10 @@ def getMBooking(user):
 	data.close()
 	return book
 
-def getInterview(user):
+def getPlan(user):
         data = shelve.open('acct.db', writeback = True)
-        interviewList = data[user]['interview']
-        print interviewList
+        plan = data[user]['onePlan']
+        print plan
 
         data.close()
-        return interviewList
+        return plan

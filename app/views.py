@@ -1,5 +1,5 @@
 from app import b_app
-from app.database import userAcct, bookMachine, getMBooking
+from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan
 # , usrAgenda, getAgenda, usrInterviewQA, getInterview
 import requests
 import re
@@ -125,16 +125,33 @@ def newbooking():
         info = request.form.get('info')
 
         alert = bookMachine(email, clientName, machineType, date, hourStart, minuteStart, ampmStart, slot, info)
+
         return redirect(url_for('profile', alert=alert))
 
     return render_template('machines.html')
 
 
 @b_app.route('/plan.html', methods=['GET', 'POST'])
-def newthing():
+def newplan():
     if currUser == "":
         return redirect(url_for('home'))
 
+    print "for new plan"
+    print (request.method)
+    info = None
+
+    if request.method == 'POST':
+        month = request.form.get('month')
+        day = request.form.get('day')
+        year = request.form.get('year')
+        areas = request.form.get('areas')
+        machines = request.form.get('machines')
+        types = request.form.get('types')
+        slot = request.form.get('slot')
+        info = request.form.get('info')
+
+        alert = workoutPlan(email, month, day, year, areas, machines, types, slot, info)
+        return redirect(url_for('profile', alert=alert))
     return render_template('plan.html')
 
 

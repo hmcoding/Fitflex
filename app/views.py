@@ -108,12 +108,11 @@ def newbooking():
     if currUser == "":
         return redirect(url_for('home'))
 
-    print "for booking"
+    print "in booking"
     print (request.method)
     info = None
 
     if request.method == 'POST':
-	if request.form['machineBooking'] == 'submitted':
         	clientName = request.form.get('clientName')
         	machineType = request.form.get('machineType')
         	date = request.form.get('date')
@@ -125,9 +124,9 @@ def newbooking():
         	slot = request.form.get('slot')
         	info = request.form.get('info')
 
-        alert = bookMachine(email, clientName, machineType, date, hourStart, minuteStart, ampmStart, slot, info)
+        	alert = bookMachine(email, clientName, machineType, date, hourStart, minuteStart, ampmStart, slot, info)
 
-        return redirect(url_for('profile', alert=alert))
+        	return redirect(url_for('profile', alert=alert))
 
     return render_template('machines.html')
 
@@ -137,23 +136,22 @@ def newplan():
     if currUser == "":
         return redirect(url_for('home'))
 
-    print "for new plan"
+    print "in new plan"
     print (request.method)
     info = None
 
     if request.method == 'POST':
-	if request.form['PlanWorkout'] == 'submitted':
         	month = request.form.get('month')
         	day = request.form.get('day')
         	year = request.form.get('year')
-        	areas = request.form.get('areas')
-        	machines = request.form.get('machines')
-        	types = request.form.get('types')
+        	areas = request.form.getlist('areas')
+        	machines = request.form.getlist('machines')
+        	types = request.form.getlist('types')
         	slot = request.form.get('slot')
         	info = request.form.get('info')
 
-        alert = workoutPlan(email, month, day, year, areas, machines, types, slot, info)
-        return redirect(url_for('profile', alert=alert))
+        	palert = workoutPlan(email, month, day, year, areas, machines, types, slot, info)
+        	return redirect(url_for('profile', palert=palert))
     return render_template('plan.html')
 
 
@@ -167,11 +165,11 @@ def newinterview():
 
 @b_app.route('/weekcal.html')
 def newdate():
-    # print currUser
+    print currUser
     if currUser == "":
         return redirect(url_for('home'))
 
-    # machines = getMBooking(email)
+    #machines = getMBooking(email)
     return render_template('weekcal.html')
 
 
@@ -207,4 +205,7 @@ def profile():
     if currUser == "":
         return redirect(url_for('home'))
 
-    return render_template('profile.html')
+    machines = getMBooking(email)
+    onePlan = getPlan(email)
+
+    return render_template('profile.html', machines=machines, onePlan=onePlan)

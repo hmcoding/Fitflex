@@ -2,7 +2,7 @@
 
 import shelve
 import re
-#import requests
+import requests
 
 
 # database that saves the users profile and their info
@@ -136,7 +136,7 @@ def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
         # open the database
         data = shelve.open('acct.db', writeback=True)
         # set the list to the user's existing list if it exists
-        plan = data[user]['plan']
+        plan = data[user]['onePlan']
 
         if not plan:
             num = 1
@@ -144,6 +144,7 @@ def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
             num = plan[-1]['id'] + 1
 
         print ("NUM: ", num)
+	
 
         onePlan = {'id': num,
                    'month': month,

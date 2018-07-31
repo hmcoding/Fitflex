@@ -113,16 +113,17 @@ def newbooking():
     info = None
 
     if request.method == 'POST':
-        clientName = request.form.get('clientName')
-        machineType = request.form.get('machineType')
-        date = request.form.get('date')
-        #timeStart = request.form.get('timeStart')
-        #timeEnd = request.form.get('timeEnd')
-        hourStart = request.form.get('hourStart')
-        minuteStart = request.form.get('minuteStart')
-        ampmStart = request.form.get('ampmStart')
-        slot = request.form.get('slot')
-        info = request.form.get('info')
+	if request.form['machineBooking'] == 'submitted':
+        	clientName = request.form.get('clientName')
+        	machineType = request.form.get('machineType')
+        	date = request.form.get('date')
+        	#timeStart = request.form.get('timeStart')
+        	#timeEnd = request.form.get('timeEnd')
+        	hourStart = request.form.get('hourStart')
+        	minuteStart = request.form.get('minuteStart')
+        	ampmStart = request.form.get('ampmStart')
+        	slot = request.form.get('slot')
+        	info = request.form.get('info')
 
         alert = bookMachine(email, clientName, machineType, date, hourStart, minuteStart, ampmStart, slot, info)
 
@@ -141,14 +142,15 @@ def newplan():
     info = None
 
     if request.method == 'POST':
-        month = request.form.get('month')
-        day = request.form.get('day')
-        year = request.form.get('year')
-        areas = request.form.get('areas')
-        machines = request.form.get('machines')
-        types = request.form.get('types')
-        slot = request.form.get('slot')
-        info = request.form.get('info')
+	if request.form['PlanWorkout'] == 'submitted':
+        	month = request.form.get('month')
+        	day = request.form.get('day')
+        	year = request.form.get('year')
+        	areas = request.form.get('areas')
+        	machines = request.form.get('machines')
+        	types = request.form.get('types')
+        	slot = request.form.get('slot')
+        	info = request.form.get('info')
 
         alert = workoutPlan(email, month, day, year, areas, machines, types, slot, info)
         return redirect(url_for('profile', alert=alert))

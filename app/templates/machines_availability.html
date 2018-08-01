@@ -84,6 +84,24 @@
     margin-top: 0;
     }
     }
+
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    td, th {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+    }
+
+    tr:nth-child(even) {
+    background-color: #dddddd;
+    }
+
+
     </style>
     </head>
     <body>
@@ -149,6 +167,10 @@
     </div>
     </form>
     <table>
+    <tr>
+    <th>Time</th>
+    <th>Name</th>
+     </tr>
     {% for list in mSchedule %}
         <tr>
         <td>{{ list[0] }}</td>

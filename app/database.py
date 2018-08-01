@@ -23,7 +23,7 @@ def userAcct(name, user, password):
             # data = {user : [{'name' : name, 'password' : password}]}
             book = []
             plan = []
-	    bookTrainer = []
+            bookTrainer = []
             data[user] = {'name': name, 'password': password, 'machines': book, 'onePlan': plan, 'trainers': bookTrainer}
     except KeyError:
         return "KeyError"
@@ -84,42 +84,42 @@ def bookMachine(user, clientName, machineType, date, hourStart, minuteStart, amp
 
 
 def bookTrainer(user, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer):
-	try:
-		# open the database
-		data = shelve.open('acct.db', writeback=True)
-		# set the list to the user's existing list if it exists
-		bookTrainer = data[user]['trainers']
+    try:
+        # open the database
+        data = shelve.open('acct.db', writeback=True)
+        # set the list to the user's existing list if it exists
+        bookTrainer = data[user]['trainers']
 
-		if not bookTrainer:
-			num = 1
-		else:
-			num = bookTrainer[-1]['id'] + 1
+        if not bookTrainer:
+            num = 1
+        else:
+            num = bookTrainer[-1]['id'] + 1
 
-		print ("NUM: ", num)
+        print ("NUM: ", num)
 
-		# store the information in a dict
-		trainers = {'id': num,
-					'gymGoerName': gymGoerName,
-					'trainerName': trainerName,
-					'bookDate': bookDate,
-					'hourStartTime': hourStartTime,
-					'minuteStartTime': minuteStartTime,
-					'ampmStartTime': ampmStartTime,
-					'slotTrainer': slotTrainer,
-					'infoForTrainer': infoForTrainer}
+        # store the information in a dict
+        trainers = {'id': num,
+                    'gymGoerName': gymGoerName,
+                    'trainerName': trainerName,
+                    'bookDate': bookDate,
+                    'hourStartTime': hourStartTime,
+                    'minuteStartTime': minuteStartTime,
+                    'ampmStartTime': ampmStartTime,
+                    'slotTrainer': slotTrainer,
+                    'infoForTrainer': infoForTrainer}
 
-		print trainers
+        print trainers
 
-		bookTrainer.append(trainers)
-		# update it in the database
-		data[user]['trainers'] = bookTrainer
+        bookTrainer.append(trainers)
+        # update it in the database
+        data[user]['trainers'] = bookTrainer
 
-		data.close()
-		print "booking successful"
-		return "Created successfully"
-	except:
-		print "booking failure"
-		return "Failed to create"
+        data.close()
+        print "booking successful"
+        return "Created successfully"
+    except:
+        print "booking failure"
+        return "Failed to create"
 
 
 def machineOpen(timeStart, timeEnd, db, machineType):
@@ -225,7 +225,6 @@ def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
         print "plan failure"
         return "Failed to create"
 
-
 # Returns map of schedule availability,
 # claimed by name or an empty string for unclaimed.
 # This doesn't check for duplicate bookings in the db,
@@ -267,6 +266,49 @@ def getBookingsOfDay(month, day, year, machine):
 
     db.close()
     return m
+
+'''
+# Get Bookings For Trainers:
+# Returns map of schedule availability,
+# claimed by name or an empty string for unclaimed.
+# This doesn't check for duplicate bookings in the db,
+# but error handling is done in insertion into the db.
+def getTrainerBookingsOfDay(month, day, year, trainer):
+    date = str(year) + "-" + str(month) + "-" + str(day)
+    db = shelve.open('acct.db', writeback=True)
+
+    # construct map of times and users
+    m = {}
+    for i in range(24):
+        m[time24to12(str(i)+"00")] = ""
+        m[time24to12(str(i)+"30")] = ""
+
+    print m
+
+    print "looking for " + trainer
+    # fill in map
+    for user in db:
+        try:
+            for booking in db[user]['trainers']:
+                try:
+                    if booking['trainerName'] == trainer:
+                        #print booking['machineType'] + " == " + machine
+                        try:
+                            if booking['date'] == date:
+                                #print booking['date'] + " == " + date
+                                #print "clientName: " + booking['clientName']
+                                # TODO: change booking['clientName'] to user['name'] if we remove the ability to choose booking name
+                                fillBookingRange(booking['timeStart'], booking['timeEnd'], m, booking['clientName'])
+                        except:
+                            print "fillTrainerBookingRange failed"
+                except:
+                    print "lookup of booking['trainerName'] failed"
+        except:
+            print(db[user]['name'], " this is an old account in the database")
+
+    db.close()
+    return m
+'''
 
 
 # claims a range in a schedule for a given name

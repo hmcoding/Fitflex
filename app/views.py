@@ -118,7 +118,7 @@ def newbooking():
         month = request.form.get('month')
         day = request.form.get('day')
         year = request.form.get('year')
-        date = str(month) + "/" + str(day) + "/" + str(year)
+        date = str(year) + "-" + str(month) + "-" + str(day)
         #timeStart = request.form.get('timeStart')
         #timeEnd = request.form.get('timeEnd')
         hourStart = request.form.get('hourStart')
@@ -151,15 +151,35 @@ def showBookings():
         year = request.form.get('year')
         machine = request.form.get('machineType')
         scheduleMap = getBookingsOfDay(month, day, year, machine)
-        print "schedule date: " + str(month) + "/" + str(day) + "/" + str(year)
+        print "schedule date: " + str(year) + "-" + str(month) + "-" + str(day)
 
-        # construct list (because I forgot dictionaries aren't ordered)
-        l = []
-        for i in range(24):
-            l.append([time24to12(str(i) + "00"), scheduleMap[time24to12(str(i) + "00")]])
-            l.append([time24to12(str(i) + "15"), scheduleMap[time24to12(str(i) + "15")]])
-            l.append([time24to12(str(i) + "30"), scheduleMap[time24to12(str(i) + "30")]])
-            l.append([time24to12(str(i) + "45"), scheduleMap[time24to12(str(i) + "45")]])
+        # construct lists formatted for html table
+        am = []
+        tmp = []
+        for i in range(0, 12):
+            tmp.append(time24to12(str(i) + "00"))
+        am.append(tmp)
+        tmp = []
+        for i in range(0, 12):
+            tmp.append(scheduleMap[time24to12(str(i) + "00")])
+            tmp.append(scheduleMap[time24to12(str(i) + "15")])
+            tmp.append(scheduleMap[time24to12(str(i) + "30")])
+            tmp.append(scheduleMap[time24to12(str(i) + "45")])
+        am.append(tmp)
+        pm = []
+        tmp = []
+        for i in range(12, 24):
+            tmp.append(time24to12(str(i) + "00"))
+        pm.append(tmp)
+        tmp = []
+        for i in range(12, 24):
+            tmp.append(scheduleMap[time24to12(str(i) + "00")])
+            tmp.append(scheduleMap[time24to12(str(i) + "15")])
+            tmp.append(scheduleMap[time24to12(str(i) + "30")])
+            tmp.append(scheduleMap[time24to12(str(i) + "45")])
+        pm.append(tmp)
+        l = [am, pm]
+
         return render_template('machines_availability.html', mSchedule=l)
 
     return render_template('machines_availability.html')

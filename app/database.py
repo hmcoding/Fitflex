@@ -231,7 +231,7 @@ def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
 # This doesn't check for duplicate bookings in the db,
 # but error handling is done in insertion into the db.
 def getBookingsOfDay(month, day, year, machine):
-    date = str(month) + "/" + str(day) + "/" + str(year)
+    date = str(year) + "-" + str(month) + "-" + str(day)
     db = shelve.open('acct.db', writeback=True)
 
     # construct map of times and users

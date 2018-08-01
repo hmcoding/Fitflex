@@ -1,5 +1,5 @@
 from app import b_app
-from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, getBookingsOfDay, time24to12
+from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, getBookingsOfDay, time24to12, bookTrainer, getTrainer
 # , usrAgenda, getAgenda, usrInterviewQA, getInterview
 import requests
 import re
@@ -207,10 +207,33 @@ def newdate():
     return render_template('weekcal.html')
 
 
-@b_app.route('/trainers.html')
-def newlocation():
+@b_app.route('/trainers.html', methods=['GET', 'POST'])
+def newtrainer():
+    #if currUser == "":
+        #return redirect(url_for('home'))
+
+    #return render_template('trainers.html')
+
     if currUser == "":
         return redirect(url_for('home'))
+
+    print "in trainers"
+    print (request.method)
+    info = None
+
+    if request.method == 'POST':
+        	gymGoerName = request.form.get('gymGoerName')
+        	trainerName = request.form.get('trainerName')
+        	bookDate = request.form.get('bookDate')
+        	hourStartTime = request.form.get('hourStartTime')
+        	minuteStartTime = request.form.get('minuteStartTime')
+        	ampmStartTime = request.form.get('ampmStartTime')
+        	slotTrainer = request.form.get('slotTrainer')
+        	infoForTrainer = request.form.get('infoForTrainer')
+
+        	talert = bookTrainer(email, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer)
+
+        	return redirect(url_for('profile', talert=talert))
 
     return render_template('trainers.html')
 
@@ -241,5 +264,6 @@ def profile():
 
     machines = getMBooking(email)
     onePlan = getPlan(email)
+    trainers = getTrainer(email)
 
-    return render_template('profile.html', machines=machines, onePlan=onePlan)
+    return render_template('profile.html', machines=machines, onePlan=onePlan, trainers=trainers)

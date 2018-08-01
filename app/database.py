@@ -82,6 +82,45 @@ def bookMachine(user, clientName, machineType, date, hourStart, minuteStart, amp
         return "Failed to create"
 
 
+def bookTrainer(user, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer):
+	try:
+		# open the database
+		data = shelve.open('acct.db', writeback=True)
+		# set the list to the user's existing list if it exists
+		bookTrainer = data[user]['trainers']
+
+		if not bookTrainer:
+			num = 1
+		else:
+			num = bookTrainer[-1]['id'] + 1
+
+		print ("NUM: ", num)
+
+		# store the information in a dict
+		trainers = {'id': num,
+					'gymGoerName': gymGoerName,
+					'trainerName': trainerName,
+					'bookDate': bookDate,
+					'hourStartTime': hourStartTime,
+					'minuteStartTime': minuteStartTime,
+					'ampmStartTime': ampmStartTime,
+					'slotTrainer': slotTrainer,
+					'infoForTrainer': infoForTrainer}
+
+		print trainers
+
+		bookTrainer.append(trainers)
+		# update it in the database
+		data[user]['trainers'] = bookTrainer
+
+		data.close()
+		print "booking successful"
+		return "Created successfully"
+	except:
+		print "booking failure"
+		return "Failed to create"
+
+
 def machineOpen(timeStart, timeEnd, db, machineType):
     for user in db:
         try:

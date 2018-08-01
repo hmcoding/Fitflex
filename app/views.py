@@ -1,5 +1,5 @@
 from app import b_app
-from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, getBookingsOfDay, time24to12, bookTrainer, getTrainer
+from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, getBookingsOfDay, getTrainerBookingsOfDay, time24to12, bookTrainer, getTrainer
 # , usrAgenda, getAgenda, usrInterviewQA, getInterview
 import requests
 import re
@@ -184,6 +184,51 @@ def showBookings():
 
     return render_template('machines_availability.html')
 
+'''
+@b_app.route('/trainers_availability.html', methods=['GET', 'POST'])
+def showTrainerBooking():
+    if currUser == "":
+        return redirect(url_for('home'))
+
+    print "in booking"
+    print (request.method)
+    info = None
+
+    if request.method == 'POST':
+        tmonth = request.form.get('tmonth')
+        tday = request.form.get('tday')
+        tyear = request.form.get('tyear')
+        tname = request.form.get('trainerName')
+        tscheduleMap = getTrainerBookingsOfDay(tmonth, tday, tyear, tname)
+        print "schedule date: " + str(tyear) + "-" + str(tmonth) + "-" + str(tday)
+
+        # construct lists formatted for html table
+        am = []
+        tmp = []
+        for i in range(0, 12):
+            tmp.append(time24to12(str(i) + "00"))
+        am.append(tmp)
+        tmp = []
+        for i in range(0, 12):
+            tmp.append(tscheduleMap[time24to12(str(i) + "00")])
+            tmp.append(tscheduleMap[time24to12(str(i) + "30")])
+        am.append(tmp)
+        pm = []
+        tmp = []
+        for i in range(12, 24):
+            tmp.append(time24to12(str(i) + "00"))
+        pm.append(tmp)
+        tmp = []
+        for i in range(12, 24):
+            tmp.append(tscheduleMap[time24to12(str(i) + "00")])
+            tmp.append(tscheduleMap[time24to12(str(i) + "30")])
+        pm.append(tmp)
+        l = [am, pm]
+
+        return render_template('trainers_availability.html', mSchedule=l)
+
+    return render_template('trainers_availability.html')
+'''
 
 @b_app.route('/plan.html', methods=['GET', 'POST'])
 def newplan():
@@ -229,11 +274,6 @@ def newdate():
 
 @b_app.route('/trainers.html', methods=['GET', 'POST'])
 def newtrainer():
-    #if currUser == "":
-        #return redirect(url_for('home'))
-
-    #return render_template('trainers.html')
-
     if currUser == "":
         return redirect(url_for('home'))
 

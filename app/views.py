@@ -1,5 +1,5 @@
 from app import b_app
-from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan
+from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, getBookingsOfDay, time24to12
 # , usrAgenda, getAgenda, usrInterviewQA, getInterview
 import requests
 import re
@@ -113,22 +113,56 @@ def newbooking():
     info = None
 
     if request.method == 'POST':
-        	clientName = request.form.get('clientName')
-        	machineType = request.form.get('machineType')
-        	date = request.form.get('date')
-        	#timeStart = request.form.get('timeStart')
-        	#timeEnd = request.form.get('timeEnd')
-        	hourStart = request.form.get('hourStart')
-        	minuteStart = request.form.get('minuteStart')
-        	ampmStart = request.form.get('ampmStart')
-        	slot = request.form.get('slot')
-        	info = request.form.get('info')
+        clientName = request.form.get('clientName')
+        machineType = request.form.get('machineType')
+        month = request.form.get('month')
+        day = request.form.get('day')
+        year = request.form.get('year')
+        date = str(month) + "/" + str(day) + "/" + str(year)
+        #timeStart = request.form.get('timeStart')
+        #timeEnd = request.form.get('timeEnd')
+        hourStart = request.form.get('hourStart')
+        minuteStart = request.form.get('minuteStart')
+        ampmStart = request.form.get('ampmStart')
+        slot = request.form.get('slot')
+        info = request.form.get('info')
 
-        	alert = bookMachine(email, clientName, machineType, date, hourStart, minuteStart, ampmStart, slot, info)
-
-        	return redirect(url_for('profile', alert=alert))
+        alert = bookMachine(email, clientName, machineType, date, hourStart, minuteStart, ampmStart, slot, info)
+        if alert == "Created successfully":
+            return redirect(url_for('profile', alert=alert))
+        else:
+            return render_template('machines.html', alert=alert)
 
     return render_template('machines.html')
+
+
+@b_app.route('/machines_availability.html', methods=['GET', 'POST'])
+def showBookings():
+    if currUser == "":
+        return redirect(url_for('home'))
+
+    print "in booking"
+    print (request.method)
+    info = None
+
+    if request.method == 'POST':
+        month = request.form.get('month')
+        day = request.form.get('day')
+        year = request.form.get('year')
+        machine = request.form.get('machineType')
+        scheduleMap = getBookingsOfDay(month, day, year, machine)
+        print "schedule date: " + str(month) + "/" + str(day) + "/" + str(year)
+
+        # construct list (because I forgot dictionaries aren't ordered)
+        l = []
+        for i in range(24):
+            l.append([time24to12(str(i) + "00"), scheduleMap[time24to12(str(i) + "00")]])
+            l.append([time24to12(str(i) + "15"), scheduleMap[time24to12(str(i) + "15")]])
+            l.append([time24to12(str(i) + "30"), scheduleMap[time24to12(str(i) + "30")]])
+            l.append([time24to12(str(i) + "45"), scheduleMap[time24to12(str(i) + "45")]])
+        return render_template('machines_availability.html', mSchedule=l)
+
+    return render_template('machines_availability.html')
 
 
 @b_app.route('/plan.html', methods=['GET', 'POST'])

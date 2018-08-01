@@ -90,32 +90,8 @@
     <!-- form created for the user to input their info -->
 
     <form class="fitflex-form" action="" method="POST">
-    <h2><center>Machine Booking<center></h2>
-
+    <h2><center>Check machine availability<center></h2>
     <div class="container">
-    <div class="row">
-    <div class="col-25">
-    <label for="ename">Client Name</label>
-    </div>
-    <div class="col-75">
-    <input type="text" id="cname" name="clientName" placeholder="Type here..">
-    </div>
-    </div>
-    <div class="row">
-    <div class="col-25">
-    <label for="fname">Machine</label>
-    </div>
-    <div class="col-75">
-    <select id="type" name="machineType">
-    <option value='Treadmill'>Treadmill</option>
-    <option value="Elliptical">Elliptical</option>
-    <option value="Stair Stepper">Stair Stepper</option>
-    <option value="Bench Press">Bench Press</option>
-    <option value="Smith Machine">Smith Machine</option>
-    <option value="Squat Rack">Squat Rack</option>
-    </select>
-    </div>
-    </div>
     <div class="row">
     <div class="col-25">
     <label for="fname">Month</label>
@@ -146,82 +122,40 @@
     </div>
     <div class="col-75">
     <select id="year" name="year">
-    {% for num in range(2018,2020) %}
+    {% for num in range(2018,2022) %}
         <option value="{{ num }}">{{ num }}</option>
     {% endfor %}
     </select>
     </div>
     </div>
-    <div class="row">
+        <div class="row">
     <div class="col-25">
-    <label for="timeStart">Time Start</label>
+    <label for="fname">Machine</label>
     </div>
     <div class="col-75">
-    <!--
-    <input type="text" id="timeStart" name="timeStart" placeholder="Type here..">
-    -->
-    <select id="hourStart" name="hourStart">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-    </select>
-    <select id="minuteStart" name="minuteStart">
-        <option value="0">00</option>
-        <option value="15">15</option>
-        <option value="30">30</option>
-        <option value="45">45</option>
-    </select>
-         <select id="ampmStart" name="ampmStart">
-         <option value="AM">AM</option>
-         <option value="PM">PM</option>
-	 </select>
-    </div>
-    </div>
-    <!--
-    <div class="row">
-    <div class="col-25">
-    <label for="timeEnd">Time End</label>
-    </div>
-    <div class="col-75">
-    <input type="text" id="timeEnd" name="timeEnd" placeholder="Type here..">
-    </div>
-    </div>
-    -->
-    <div class="row">
-    <div class="col-25">
-    <label for="attire">Time Slot</label>
-    </div>
-    <div class="col-75">
-    <select id="slot" name="slot">
-    <option value="15">15 min</option>
-    <option value="30">30 min</option>
-    <option value="45">45 min</option>
+    <select id="type" name="machineType">
+    <option value="Treadmill">Treadmill</option>
+    <option value="Elliptical">Elliptical</option>
+    <option value="Stair Stepper">Stair Stepper</option>
+    <option value="Bench Press">Bench Press</option>
+    <option value="Smith Machine">Smith Machine</option>
+    <option value="Squat Rack">Squat Rack</option>
     </select>
     </div>
     </div>
     <div class="row">
-    <div class="col-25">
-    <label for="info">Details</label>
-    </div>
-    <div class="col-75">
-    <textarea id="info" name="info" placeholder="Write something.." style="height:200px"></textarea>
-    </div>
-    </div>
-    <div class="row">
-    <input name="machineBooking" type="submit">
+    <input name="machineAvailability" type="submit">
     </div>
     </div>
     </form>
-
+    <table>
+    {% for list in mSchedule %}
+        <tr>
+        <td>{{ list[0] }}</td>
+        <td>{{ list[1] }}</td>
+        </tr>
+    {% endfor %}
+    </table>
     </body>
     </html>
 

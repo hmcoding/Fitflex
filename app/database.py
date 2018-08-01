@@ -61,7 +61,7 @@ def bookMachine(user, clientName, machineType, date, hourStart, minuteStart, amp
             machines = {'id': num,
                         'clientName': clientName,
                         'machineType': machineType,
-                        'date': date,
+                        'date': str(date),
                         'timeStart': timeStart,
                         'timeEnd': timeEnd,
                         'slot': slot,
@@ -94,7 +94,7 @@ def machineOpen(timeStart, timeEnd, db, machineType):
                 if booking['machineType'] == machineType and timesOverlap(timeStart, timeEnd, tmpStart, tmpEnd):
                     return False
         except:
-            print(db[user]['name'], "this is an old account in the database")
+            print(db[user]['name'], " this is an old account in the database")
     return True
 
 
@@ -116,10 +116,27 @@ def time12to24(hour, minute, amPm):
     if amPm == "PM" and int(hour) != 12:
         mhour = int(hour) + 12
     elif amPm == "AM" and int(hour) == 12:
-        mhour = 24
+        mhour = 0
     else:
         mhour = int(hour)
     return mhour * 100 + int(minute)
+
+
+def time24to12(time24):
+    time24 = int(time24)
+    hour = time24 / 100
+    minute = time24 % 100
+    amPm = "AM"
+    if hour == 0:
+        hour = 12
+    elif hour > 12:
+        hour -= 12
+        amPm = "PM"
+    elif hour == 12:
+        amPm = "PM"
+    if minute < 10:
+        minute = "0" + str(minute)
+    return str(hour) + ":" + str(minute) + amPm
 
 
 # this will work as long as we keep slot lengths limited to 45
@@ -144,7 +161,6 @@ def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
             num = plan[-1]['id'] + 1
 
         print ("NUM: ", num)
-	
 
         onePlan = {'id': num,
                    'month': month,
@@ -168,6 +184,62 @@ def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
     except:
         print "plan failure"
         return "Failed to create"
+
+
+# Returns map of schedule availability,
+# claimed by name or an empty string for unclaimed.
+# This doesn't check for duplicate bookings in the db,
+# but error handling is done in insertion into the db.
+def getBookingsOfDay(month, day, year, machine):
+    date = str(month) + "/" + str(day) + "/" + str(year)
+    db = shelve.open('acct.db', writeback=True)
+
+    # construct map of times and users
+    m = {}
+    for i in range(24):
+        m[time24to12(str(i)+"00")] = ""
+        m[time24to12(str(i)+"15")] = ""
+        m[time24to12(str(i)+"30")] = ""
+        m[time24to12(str(i)+"45")] = ""
+
+    print m
+
+    print "looking for " + machine
+    # fill in map
+    for user in db:
+        try:
+            for booking in db[user]['machines']:
+                try:
+                    if booking['machineType'] == machine:
+                        #print booking['machineType'] + " == " + machine
+                        try:
+                            if booking['date'] == date:
+                                #print booking['date'] + " == " + date
+                                #print "clientName: " + booking['clientName']
+                                # TODO: change booking['clientName'] to user['name'] if we remove the ability to choose booking name
+                                fillBookingRange(booking['timeStart'], booking['timeEnd'], m, booking['clientName'])
+                        except:
+                            print "fillBookingRange failed"
+                except:
+                    print "lookup of booking['machineType'] failed"
+        except:
+            print(db[user]['name'], " this is an old account in the database")
+
+    db.close()
+    return m
+
+
+# claims a range in a schedule for a given name
+# error checking is in booking insertion
+def fillBookingRange(start, end, m, name):
+    curr = int(start)
+    mend = int(end)
+    while curr < mend:
+        m[time24to12(curr)] = name
+        curr += 15
+        if curr % 100 == 60:
+            curr -= 60
+            curr += 100
 
 
 def getMBooking(user):

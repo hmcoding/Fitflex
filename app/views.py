@@ -175,10 +175,35 @@ def newdate():
 
 @b_app.route('/trainers.html')
 def newlocation():
+    #if currUser == "":
+        #return redirect(url_for('home'))
+
+    #return render_template('trainers.html')
+
     if currUser == "":
         return redirect(url_for('home'))
 
-    return render_template('trainers.html')
+    print "in booking"
+    print (request.method)
+    info = None
+
+    if request.method == 'POST':
+        	gymGoerName = request.form.get('gymGoerName')
+        	trainerName = request.form.get('trainerName')
+        	bookDate = request.form.get('bookDate')
+        	#trainerBookStart = request.form.get('trainerBookStart')
+        	#trainerBookEnd = request.form.get('trainerBookEnd')
+        	hourStartTime = request.form.get('hourStartTime')
+        	minuteStartTime = request.form.get('minuteStartTime')
+        	ampmStartTime = request.form.get('ampmStartTime')
+        	slotTrainer = request.form.get('slotTrainer')
+        	infoForTrainer = request.form.get('infoForTrainer')
+
+        	talert = bookMachine(email, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer)
+
+        	return redirect(url_for('profile', alert=talert))
+
+    return render_template('trainer.html')
 
 
 @b_app.route('/about.html')

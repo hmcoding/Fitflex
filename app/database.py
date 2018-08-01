@@ -23,7 +23,8 @@ def userAcct(name, user, password):
             # data = {user : [{'name' : name, 'password' : password}]}
             book = []
             plan = []
-            data[user] = {'name': name, 'password': password, 'machines': book, 'onePlan': plan}
+	    bookTrainer = []
+            data[user] = {'name': name, 'password': password, 'machines': book, 'onePlan': plan, 'trainers': bookTrainer}
     except KeyError:
         return "KeyError"
 
@@ -225,3 +226,11 @@ def getPlan(user):
 
     data.close()
     return plan
+
+def getTrainer(user):
+    data = shelve.open('acct.db', writeback=True)
+    plan = data[user]['trainers']
+    print bookTrainer
+
+    data.close()
+    return bookTrainer

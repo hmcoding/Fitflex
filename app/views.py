@@ -1,5 +1,5 @@
 from app import b_app
-from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan
+from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, bookTrainer, getTrainer
 # , usrAgenda, getAgenda, usrInterviewQA, getInterview
 import requests
 import re
@@ -173,8 +173,8 @@ def newdate():
     return render_template('weekcal.html')
 
 
-@b_app.route('/trainers.html')
-def newlocation():
+@b_app.route('/trainers.html', methods=['GET', 'POST'])
+def newtrainer():
     #if currUser == "":
         #return redirect(url_for('home'))
 
@@ -183,7 +183,7 @@ def newlocation():
     if currUser == "":
         return redirect(url_for('home'))
 
-    print "in booking"
+    print "in trainers"
     print (request.method)
     info = None
 
@@ -191,19 +191,17 @@ def newlocation():
         	gymGoerName = request.form.get('gymGoerName')
         	trainerName = request.form.get('trainerName')
         	bookDate = request.form.get('bookDate')
-        	#trainerBookStart = request.form.get('trainerBookStart')
-        	#trainerBookEnd = request.form.get('trainerBookEnd')
         	hourStartTime = request.form.get('hourStartTime')
         	minuteStartTime = request.form.get('minuteStartTime')
         	ampmStartTime = request.form.get('ampmStartTime')
         	slotTrainer = request.form.get('slotTrainer')
         	infoForTrainer = request.form.get('infoForTrainer')
 
-        	talert = bookMachine(email, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer)
+        	talert = bookTrainer(email, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer)
 
-        	return redirect(url_for('profile', alert=talert))
+        	return redirect(url_for('profile', talert=talert))
 
-    return render_template('trainer.html')
+    return render_template('trainers.html')
 
 
 @b_app.route('/about.html')
@@ -232,5 +230,6 @@ def profile():
 
     machines = getMBooking(email)
     onePlan = getPlan(email)
+    trainers = getTrainer(email)
 
-    return render_template('profile.html', machines=machines, onePlan=onePlan)
+    return render_template('profile.html', machines=machines, onePlan=onePlan, trainers=trainers)

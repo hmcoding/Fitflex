@@ -301,8 +301,8 @@ def getPlan(user):
 
 def getTrainer(user):
     data = shelve.open('acct.db', writeback=True)
-    plan = data[user]['trainers']
-    print bookTrainer
+    trainer = data[user]['trainers']
+    print trainer
 
     data.close()
-    return bookTrainer
+    return trainer

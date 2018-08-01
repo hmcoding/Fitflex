@@ -117,8 +117,45 @@
 	 </ul>
 	 </div>
 	</div>
-	
-	
+
+	<div class="container">
+	 <div class="panel panel-default">
+	 <div class="panel-heading">
+	 <h3 class="panel-title">Trainer Booking(s)</h3>
+	 </div>
+	 <ul class="list-group">
+	 {% for a in trainers %}
+	 <li class="list-group-item">
+	 <div class="row toggle" id="dropdown-detail-trainer-{{ a['id'] }}" data-toggle="detail-trainer-{{ a['id'] }}" value="Responses">
+		<div class="col-xs-10">
+	 Trainer Booking
+	 </div>
+	 <div class="col-xs-2"><i class="fa fa-chevron-down pull-right"></i></div>
+	 </div>
+	 <div id="detail-trainer-{{ a['id']}}">
+	 <div class="container">
+	 <div class="fluid-row">
+		<p><b>
+	 bookDate</b>: {{ a['date'] }}
+	 </p>
+     <b>Time Booked</b>: {{ a['slotTrainer'] }} minutes
+	 </p>
+		<p><b>
+	 Trainer</b>: {{ a['trainerName'] }}
+	 </p>
+	 <p><b>
+	 Info for trainer</b>: {{ a['infoForTrainer'] }}
+	 </p>
+	 </div>
+	 {% endfor %}
+
+	 </div>
+	 </div>
+	 </li>
+	 </ul>
+	 </div>
+	</div>
+
 	
 	
 	<script>

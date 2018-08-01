@@ -1,0 +1,185 @@
+    {% extends "header.html" %}
+    {% block content %}
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+    <!-- included link to the agenda interface -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <style>
+
+    h2 {
+
+    font-family: "Helvetica Neue";
+    padding: 15px;
+    }
+    * {
+    box-sizing: border-box;
+    }
+
+    <!--text area for the user to implement their upcoming events-->
+
+    input[type=text], select, textarea{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: "Helvetica Neue";
+    }
+
+    label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+    font-family: "Helvetica Neue";
+    }
+
+    input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+    }
+
+    input[type=submit]:hover {
+    background-color: #45a049;
+    }
+
+    .container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    }
+
+    .col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+    }
+
+    .col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    }
+
+    /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+    @media (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+    }
+    }
+
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    td, th {
+    border: 1px solid gray;
+    text-align: left;
+    padding: 8px;
+    }
+
+
+    </style>
+    </head>
+    <body>
+    <!-- form created for the user to input their info -->
+
+    <form class="fitflex-form" action="" method="POST">
+    <h2><center>Check trainer availability<center></h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-25">
+                <label for="fname">Date</label>
+            </div>
+            <div class="col-25">
+                <select id="type" name="tmonth">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="col-25">
+                <select id="day" name="tday">
+                    {% for num in range(1,32) %}
+                        <option value="{{ num }}">{{ num }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-25">
+                <select id="year" name="tyear">
+                    {% for num in range(2018,2025) %}
+                        <option value="{{ num }}">{{ num }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-25">
+            <label for="fname">Trainer</label>
+        </div>
+    <div class="col-75">
+    <select id="type" name="trainerName">
+    <option value="Hannah Adams">Hannah Adams</option>
+    <option value="John Smith">John Smith</option>
+    <option value="Harold Banner">Harold Banner</option>
+    <option value="Billy Perez">Billy Perez</option>
+    <option value="Sarah McDonald">Sarah McDonald</option>
+    <option value="Sally Rainer">Sally Rainer</option>
+    </select>
+    </div>
+    </div>
+    <div class="row">
+    <input name="trainerAvailability" type="submit">
+    </div>
+    </div>
+    </form>
+    {% if mSchedule != None %}
+        <table class="container">
+        {% for halfDay in mSchedule %}
+            <tr>
+            {% for time in halfDay[0] %}
+                <th colspan="4">{{ time }}</th>
+            {% endfor %}
+            </tr>
+            {% for slot in halfDay[1] %}
+                {% if slot == "" %}
+                    <td bgcolor="#4bc12e"></td>
+                {% else %}
+                    <td bgcolor="#891111"></td>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </table>
+    {% endif %}
+    </body>
+    </html>
+
+    {% endblock %}

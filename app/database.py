@@ -290,7 +290,7 @@ def getBookingsOfDay(month, day, year, machine):
                                 #print booking['date'] + " == " + date
                                 #print "clientName: " + booking['clientName']
                                 # TODO: change booking['clientName'] to user['name'] if we remove the ability to choose booking name
-                                fillBookingRange(booking['timeStart'], booking['timeEnd'], m, booking['name'])
+                                fillBookingRange(booking['timeStart'], booking['timeEnd'], m, booking['machineType'])
                         except:
                             print "fillBookingRange failed"
                 except:

@@ -262,14 +262,6 @@ def newinterview():
     return render_template('here.html')
 
 
-@b_app.route('/weekcal.html')
-def newdate():
-    print currUser
-    if currUser == "":
-        return redirect(url_for('home'))
-
-    #machines = getMBooking(email)
-    return render_template('weekcal.html')
 
 
 @b_app.route('/trainers.html', methods=['GET', 'POST'])

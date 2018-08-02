@@ -1,6 +1,5 @@
 from app import b_app
-from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, getBookingsOfDay, time24to12, bookTrainer, getTrainer
-#getTrainerBookingsOfDay
+from app.database import userAcct, bookMachine, getMBooking, workoutPlan, getPlan, getBookingsOfDay, time24to12, bookTrainer, getTrainer, getTrainerBookingsOfDay
 import requests
 import re
 import shelve
@@ -184,7 +183,7 @@ def showBookings():
 
     return render_template('machines_availability.html')
 
-'''
+
 @b_app.route('/trainers_availability.html', methods=['GET', 'POST'])
 def showTrainerBooking():
     if currUser == "":
@@ -211,7 +210,9 @@ def showTrainerBooking():
         tmp = []
         for i in range(0, 12):
             tmp.append(tscheduleMap[time24to12(str(i) + "00")])
+            tmp.append(tscheduleMap[time24to12(str(i) + "15")])
             tmp.append(tscheduleMap[time24to12(str(i) + "30")])
+            tmp.append(tscheduleMap[time24to12(str(i) + "45")])
         am.append(tmp)
         pm = []
         tmp = []
@@ -221,14 +222,16 @@ def showTrainerBooking():
         tmp = []
         for i in range(12, 24):
             tmp.append(tscheduleMap[time24to12(str(i) + "00")])
+            tmp.append(tscheduleMap[time24to12(str(i) + "15")])
             tmp.append(tscheduleMap[time24to12(str(i) + "30")])
+            tmp.append(tscheduleMap[time24to12(str(i) + "45")])
         pm.append(tmp)
         l = [am, pm]
 
         return render_template('trainers_availability.html', mSchedule=l)
 
     return render_template('trainers_availability.html')
-'''
+
 
 @b_app.route('/plan.html', methods=['GET', 'POST'])
 def newplan():
@@ -240,17 +243,17 @@ def newplan():
     info = None
 
     if request.method == 'POST':
-        	month = request.form.get('month')
-        	day = request.form.get('day')
-        	year = request.form.get('year')
-        	areas = request.form.getlist('areas')
-        	machines = request.form.getlist('machines')
-        	types = request.form.getlist('types')
-        	slot = request.form.get('slot')
-        	info = request.form.get('info')
+        month = request.form.get('month')
+        day = request.form.get('day')
+        year = request.form.get('year')
+        areas = request.form.getlist('areas')
+        machines = request.form.getlist('machines')
+        types = request.form.getlist('types')
+        slot = request.form.get('slot')
+        info = request.form.get('info')
 
-        	palert = workoutPlan(email, month, day, year, areas, machines, types, slot, info)
-        	return redirect(url_for('profile', palert=palert))
+        palert = workoutPlan(email, month, day, year, areas, machines, types, slot, info)
+        return redirect(url_for('profile', palert=palert))
     return render_template('plan.html')
 
 
@@ -282,18 +285,24 @@ def newtrainer():
     info = None
 
     if request.method == 'POST':
-        	gymGoerName = request.form.get('gymGoerName')
-        	trainerName = request.form.get('trainerName')
-        	bookDate = request.form.get('bookDate')
-        	hourStartTime = request.form.get('hourStartTime')
-        	minuteStartTime = request.form.get('minuteStartTime')
-        	ampmStartTime = request.form.get('ampmStartTime')
-        	slotTrainer = request.form.get('slotTrainer')
-        	infoForTrainer = request.form.get('infoForTrainer')
+        gymGoerName = request.form.get('gymGoerName')
+        trainerName = request.form.get('trainerName')
+        month = request.form.get('month')
+        day = request.form.get('day')
+        year = request.form.get('year')
+        bookDate = str(year) + "-" + str(month) + "-" + str(day)
+        hourStartTime = request.form.get('hourStartTime')
+        minuteStartTime = request.form.get('minuteStartTime')
+        ampmStartTime = request.form.get('ampmStartTime')
+        slotTrainer = request.form.get('slotTrainer')
+        infoForTrainer = request.form.get('infoForTrainer')
 
-        	talert = bookTrainer(email, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer)
+        alert = bookTrainer(email, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer)
 
-        	return redirect(url_for('profile', talert=talert))
+        if alert == "Created successfully":
+            return redirect(url_for('profile', alert=alert))
+        else:
+            return render_template('trainers.html', alert=alert)
 
     return render_template('trainers.html')
 

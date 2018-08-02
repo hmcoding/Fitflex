@@ -36,10 +36,10 @@
 	 Machine</b>: {{ a['machineType'] }}
 	 </p>
 		<p><b>
-	 Time Start</b>: {{ a['timeStart'] }}
+	 Start Time</b>: {{ a['timeStartF'] }}
 	 </p>
 		<p><b>
-	 Time End</b>: {{ a['timeEnd'] }}
+	 End Time</b>: {{ a['timeEndF'] }}
 	 </p>
 		<p><b>
 	 Date</b>: {{ a['date'] }}
@@ -139,8 +139,15 @@
 	 <div class="container">
 	 <div class="fluid-row">
 		<p><b>
-	 bookDate</b>: {{ a['date'] }}
+	 Date</b>: {{ a['bookDate'] }}
 	 </p>
+     <p><b>
+	 Start Time</b>: {{ a['timeStartF'] }}
+	 </p>
+     <p><b>
+	 End Time</b>: {{ a['timeEndF'] }}
+	 </p>
+     <p>
      <b>Time Booked</b>: {{ a['slotTrainer'] }} minutes
 	 </p>
 		<p><b>

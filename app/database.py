@@ -65,6 +65,8 @@ def bookMachine(user, clientName, machineType, date, hourStart, minuteStart, amp
                         'date': str(date),
                         'timeStart': timeStart,
                         'timeEnd': timeEnd,
+                        'timeStartF': time24to12(timeStart),
+                        'timeEndF': time24to12(timeEnd),
                         'slot': slot,
                         'info': info}
 
@@ -85,38 +87,53 @@ def bookMachine(user, clientName, machineType, date, hourStart, minuteStart, amp
 
 def bookTrainer(user, gymGoerName, trainerName, bookDate, hourStartTime, minuteStartTime, ampmStartTime, slotTrainer, infoForTrainer):
     try:
+        # get our times calculated
+        timeStart = time12to24(hourStartTime, minuteStartTime, ampmStartTime)
+        print("timeStart = ", timeStart)
+        timeEnd = endTime(timeStart, slotTrainer)
+        print("timeEnd = ", timeEnd)
+
         # open the database
         data = shelve.open('acct.db', writeback=True)
-        # set the list to the user's existing list if it exists
-        bookTrainer = data[user]['trainers']
 
-        if not bookTrainer:
-            num = 1
+        if not trainerOpen(timeStart, timeEnd, data, trainerName):
+            print("booking failed: unavailable date/time")
+            return "Invalid Booking Time"
         else:
-            num = bookTrainer[-1]['id'] + 1
+            # set the list to the user's existing list if it exists
+            book_trainer = data[user]['trainers']
 
-        print ("NUM: ", num)
+            if not book_trainer:
+                num = 1
+            else:
+                num = book_trainer[-1]['id'] + 1
 
-        # store the information in a dict
-        trainers = {'id': num,
-                    'gymGoerName': gymGoerName,
-                    'trainerName': trainerName,
-                    'bookDate': bookDate,
-                    'hourStartTime': hourStartTime,
-                    'minuteStartTime': minuteStartTime,
-                    'ampmStartTime': ampmStartTime,
-                    'slotTrainer': slotTrainer,
-                    'infoForTrainer': infoForTrainer}
+            print ("NUM: ", num)
 
-        print trainers
+            # store the information in a dict
+            trainers = {'id': num,
+                        'gymGoerName': gymGoerName,
+                        'trainerName': trainerName,
+                        'bookDate': bookDate,
+                        'timeStart': timeStart,
+                        'timeEnd': timeEnd,
+                        'timeStartF': time24to12(timeStart),
+                        'timeEndF': time24to12(timeEnd),
+                        'hourStartTime': hourStartTime,
+                        'minuteStartTime': minuteStartTime,
+                        'ampmStartTime': ampmStartTime,
+                        'slotTrainer': slotTrainer,
+                        'infoForTrainer': infoForTrainer}
 
-        bookTrainer.append(trainers)
-        # update it in the database
-        data[user]['trainers'] = bookTrainer
+            print trainers
 
-        data.close()
-        print "booking successful"
-        return "Created successfully"
+            book_trainer.append(trainers)
+            # update it in the database
+            data[user]['trainers'] = book_trainer
+
+            data.close()
+            print "booking successful"
+            return "Created successfully"
     except:
         print "booking failure"
         return "Failed to create"
@@ -132,6 +149,22 @@ def machineOpen(timeStart, timeEnd, db, machineType):
                 tmpEnd = int(booking.get('timeEnd'))
                 #print booking
                 if booking['machineType'] == machineType and timesOverlap(timeStart, timeEnd, tmpStart, tmpEnd):
+                    return False
+        except:
+            print(db[user]['name'], " this is an old account in the database")
+    return True
+
+
+def trainerOpen(timeStart, timeEnd, db, trainerName):
+    for user in db:
+        try:
+            trainer_book = db[user]['trainers']
+            #print db[user]['name']
+            for booking in trainer_book:
+                tmpStart = int(booking.get('timeStart'))
+                tmpEnd = int(booking.get('timeEnd'))
+                #print booking
+                if booking['trainerName'] == trainerName and timesOverlap(timeStart, timeEnd, tmpStart, tmpEnd):
                     return False
         except:
             print(db[user]['name'], " this is an old account in the database")
@@ -225,6 +258,7 @@ def workoutPlan(user, month, day, year, areas, machines, types, slot, info):
         print "plan failure"
         return "Failed to create"
 
+
 # Returns map of schedule availability,
 # claimed by name or an empty string for unclaimed.
 # This doesn't check for duplicate bookings in the db,
@@ -267,7 +301,7 @@ def getBookingsOfDay(month, day, year, machine):
     db.close()
     return m
 
-'''
+
 # Get Bookings For Trainers:
 # Returns map of schedule availability,
 # claimed by name or an empty string for unclaimed.
@@ -281,7 +315,9 @@ def getTrainerBookingsOfDay(month, day, year, trainer):
     m = {}
     for i in range(24):
         m[time24to12(str(i)+"00")] = ""
+        m[time24to12(str(i)+"15")] = ""
         m[time24to12(str(i)+"30")] = ""
+        m[time24to12(str(i)+"45")] = ""
 
     print m
 
@@ -294,11 +330,11 @@ def getTrainerBookingsOfDay(month, day, year, trainer):
                     if booking['trainerName'] == trainer:
                         #print booking['machineType'] + " == " + machine
                         try:
-                            if booking['date'] == date:
+                            if booking['bookDate'] == date:
                                 #print booking['date'] + " == " + date
                                 #print "clientName: " + booking['clientName']
                                 # TODO: change booking['clientName'] to user['name'] if we remove the ability to choose booking name
-                                fillBookingRange(booking['timeStart'], booking['timeEnd'], m, booking['clientName'])
+                                fillBookingRange(booking['timeStart'], booking['timeEnd'], m, booking['trainerName'])
                         except:
                             print "fillTrainerBookingRange failed"
                 except:
@@ -308,7 +344,6 @@ def getTrainerBookingsOfDay(month, day, year, trainer):
 
     db.close()
     return m
-'''
 
 
 # claims a range in a schedule for a given name

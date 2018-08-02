@@ -26,6 +26,6 @@ Although it wasn't advertised in our project plan, we added a very useful profil
 
 ----- Separation of Work -----
 
-Holly was responsible for the templates for the machines page, workout plan, and profile. She added all of those templates to the database.py for the back-end database and views.py for Flask integration. Hunter was responsible for the workout plan HTML page and helped support it in the python files. Bo was responsible for the machine availability page and error checking for the machine and trainer booking pages. He also added functions for them in the python code. Isak was responsible for the trainer booking page and trainer availability page as well as helping out with functions for them in the python code. Every group member made his or her self available for help with each others responsibilities.
+Holly was responsible for the templates for the machines page, workout plan, and profile. She added all of those templates to the database.py for the back-end database and views.py for Flask integration. Hunter was responsible for a large part of the workout plan HTML page. Bo was responsible for the machine availability page and error checking for the machine and trainer booking pages. He added functions for them in the python code and also made sure to check for double bookings in both machines and trainers. Isak was responsible for the trainer booking page and trainer availability page as well as helping out with some of the functions for them in the python code. Every group member made his or her self available for help with each others responsibilities.
 
-This project has been a great learning experience for every group member!
+This project has been a great learning experience for every one of us!

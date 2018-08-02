@@ -130,7 +130,7 @@ def newbooking():
         if alert == "Created successfully":
             return redirect(url_for('profile', alert=alert))
         else:
-            return render_template('machines.html', alert=alert)
+            return render_template('machines', alert=alert)
 
     return render_template('machines.html')
 
